@@ -1,0 +1,84 @@
+{
+  "checkIns": [
+    {
+      "id": "1sqbt",
+      "timestamp": "2026-01-17T15:52:37.942Z",
+      "features": {
+        "rms": 0.002653981664403345,
+        "zcr": 10.91851851851852,
+        "pauseRatio": 0.9925925925925926,
+        "speechRate": 0.31901041666666663,
+        "duration": 3.1346938775510207
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "8varst",
+      "timestamp": "2026-01-17T15:52:50.233Z",
+      "features": {
+        "rms": 0.014477647726096889,
+        "zcr": 7.737089201877934,
+        "pauseRatio": 0.7276995305164319,
+        "speechRate": 5.256932218309859,
+        "duration": 2.4729251700680273
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "l0dfa9",
+      "timestamp": "2026-01-17T15:53:16.885Z",
+      "features": {
+        "rms": 0.019629126767801073,
+        "zcr": 23.979591836734695,
+        "pauseRatio": 0.6403061224489796,
+        "speechRate": 4.833984375,
+        "duration": 9.102222222222222
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "z792el",
+      "timestamp": "2026-01-17T15:56:06.847Z",
+      "features": {
+        "rms": 0.016232138314894118,
+        "zcr": 24.635228848821082,
+        "pauseRatio": 0.723994452149792,
+        "speechRate": 4.061741504854369,
+        "duration": 8.370793650793651
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "pz83qa",
+      "timestamp": "2026-01-17T15:56:29.318Z",
+      "features": {
+        "rms": 0.010766169449662393,
+        "zcr": 24.02065404475043,
+        "pauseRatio": 0.8296041308089501,
+        "speechRate": 3.2614834337349397,
+        "duration": 6.745396825396826
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    }
+  ],
+  "baseline": {
+    "avgEnergy": 0.012751812784571565,
+    "avgStress": 5,
+    "windowSize": 5
+  }
+}
