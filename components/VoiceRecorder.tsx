@@ -73,26 +73,64 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
         }
     };
 
+    // AI Inference Logic for Client-Side "Instant Feedback"
+    const inferMetrics = (feat: AudioFeatures) => {
+        let calcStress = 5;
+        let calcFatigue = 5;
+
+        // 1. Infer Stress (Fast speech, high pitch/zcr, high energy)
+        if (feat.speechRate > 4.8) calcStress += 3;
+        else if (feat.speechRate > 4.2) calcStress += 1;
+
+        if (feat.rms > 0.25) calcStress += 2;
+        if (feat.zcr > 0.15) calcStress += 2;
+
+        // Lower stress if calm
+        if (feat.speechRate < 3.5 && feat.rms < 0.1) calcStress -= 2;
+
+        // 2. Infer Fatigue (Slow speech, low energy, pauses)
+        if (feat.speechRate < 3.0) calcFatigue += 3;
+        if (feat.rms < 0.05) calcFatigue += 2;
+        if (feat.pauseRatio > 0.3) calcFatigue += 2;
+
+        // Lower fatigue if energetic
+        if (feat.speechRate > 4.0 && feat.rms > 0.15) calcFatigue -= 3;
+
+        return {
+            stress: Math.max(1, Math.min(10, calcStress)),
+            fatigue: Math.max(1, Math.min(10, calcFatigue))
+        };
+    };
+
     const stopRecording = async () => {
         if (!analyzerRef.current) return;
         try {
             const result = await analyzerRef.current.stop();
             setFeatures(result);
-            setStep("REPORT");
+
+            // Auto-analyze and submit
+            setStep("REPORT"); // Briefly show "Analyzing"
+
+            const inferred = inferMetrics(result);
+            setStress(inferred.stress);
+            setFatigue(inferred.fatigue);
+
+            // Simulate "Thinking" delay then submit
+            setTimeout(() => {
+                onComplete({
+                    features: result,
+                    selfReport: inferred,
+                });
+                setStep("DONE");
+            }, 1500);
+
         } catch (e) {
             console.error("Error stopping:", e);
         }
     };
 
-    const submitCheckIn = () => {
-        if (features) {
-            onComplete({
-                features,
-                selfReport: { stress, fatigue },
-            });
-            setStep("DONE");
-        }
-    };
+    // No longer need manual submit
+    const submitCheckIn = () => { };
 
     return (
         <div className="w-full max-w-md mx-auto bg-card border border-border rounded-xl p-6 shadow-xl">
@@ -108,12 +146,10 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
                     >
                         <Mic className="text-white w-8 h-8" />
                     </button>
+                    <p className="text-xs text-muted-foreground">AI will analyze your vitals automatically.</p>
                 </div>
             )}
 
-
-
-            // ... (rest of component) ...
 
             {step === "RECORDING" && (
                 <div className="flex flex-col items-center justify-center space-y-6 py-8">
@@ -142,65 +178,29 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
             )}
 
             {step === "REPORT" && (
-                <div className="space-y-6">
-                    <h3 className="text-xl font-semibold text-center">Quick Self Check</h3>
-
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-2 flex justify-between">
-                                <span>Fatigue Level</span>
-                                <span className="text-muted-foreground">{fatigue}/10</span>
-                            </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="10"
-                                value={fatigue}
-                                onChange={(e) => setFatigue(Number(e.target.value))}
-                                className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-                            />
-                            <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                                <span>Wide Awake</span>
-                                <span>Exhausted</span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium mb-2 flex justify-between">
-                                <span>Perceived Stress</span>
-                                <span className="text-muted-foreground">{stress}/10</span>
-                            </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="10"
-                                value={stress}
-                                onChange={(e) => setStress(Number(e.target.value))}
-                                className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-                            />
-                            <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                                <span>Calm</span>
-                                <span>Overwhelmed</span>
-                            </div>
-                        </div>
+                <div className="flex flex-col items-center justify-center py-12 space-y-6">
+                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
+                    <div className="text-center space-y-2">
+                        <h3 className="text-xl font-semibold">Analyzing Voice Biomarkers...</h3>
+                        <p className="text-muted-foreground text-sm">Extracting stress & fatigue levels</p>
                     </div>
-
-                    <button
-                        onClick={submitCheckIn}
-                        className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-blue-600 transition-colors"
-                    >
-                        Complete Check-In
-                    </button>
                 </div>
             )}
 
             {step === "DONE" && (
                 <div className="flex flex-col items-center justify-center py-8 space-y-4">
                     <CheckCircle className="w-16 h-16 text-green-500" />
-                    <h2 className="text-xl font-semibold">Check-in Saved</h2>
-                    <p className="text-center text-muted-foreground text-sm">
-                        Analyzing trends...
-                    </p>
+                    <h2 className="text-xl font-semibold">Check-in Complete</h2>
+                    <div className="flex gap-4 text-center">
+                        <div>
+                            <p className="text-xs text-muted-foreground uppercase">Stress</p>
+                            <p className="text-2xl font-bold">{stress}/10</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-muted-foreground uppercase">Fatigue</p>
+                            <p className="text-2xl font-bold">{fatigue}/10</p>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

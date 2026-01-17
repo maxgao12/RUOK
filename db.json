@@ -104,11 +104,116 @@
         "stress": 5,
         "fatigue": 5
       }
+    },
+    {
+      "id": "skt98",
+      "timestamp": "2026-01-17T16:17:55.107Z",
+      "features": {
+        "rms": 0.02569043693894137,
+        "zcr": 21.8585313174946,
+        "pauseRatio": 0.7068034557235421,
+        "speechRate": 3.953179839362851,
+        "duration": 21.501678004535147
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "di3vg8",
+      "timestamp": "2026-01-17T16:18:55.173Z",
+      "features": {
+        "rms": 0.02118546972624933,
+        "zcr": 29.223060344827587,
+        "pauseRatio": 0.6255387931034483,
+        "speechRate": 5.429708546605603,
+        "duration": 21.5481179138322
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "3i0xle",
+      "timestamp": "2026-01-17T16:21:26.260Z",
+      "features": {
+        "rms": 0.0019053390751489901,
+        "zcr": 14.855305466237942,
+        "pauseRatio": 1,
+        "speechRate": 0,
+        "duration": 3.6107029478458053
+      },
+      "selfReport": {
+        "stress": 10,
+        "fatigue": 6
+      }
+    },
+    {
+      "id": "u28248",
+      "timestamp": "2026-01-17T16:24:05.519Z",
+      "features": {
+        "rms": 0.021146322291257666,
+        "zcr": 28.086072922893006,
+        "pauseRatio": 0.7644949193066348,
+        "speechRate": 4.530596234309623,
+        "duration": 19.423492063492063
+      },
+      "selfReport": {
+        "stress": 8,
+        "fatigue": 9
+      }
+    },
+    {
+      "id": "olb77t",
+      "timestamp": "2026-01-17T16:24:33.945Z",
+      "features": {
+        "rms": 0.02622073310122918,
+        "zcr": 22.831810854379366,
+        "pauseRatio": 0.5867813003761418,
+        "speechRate": 5.04485575631381,
+        "duration": 21.606167800453516
+      },
+      "selfReport": {
+        "stress": 10,
+        "fatigue": 9
+      }
+    },
+    {
+      "id": "hkabc",
+      "timestamp": "2026-01-17T16:25:11.210Z",
+      "features": {
+        "rms": 0.026264688523034475,
+        "zcr": 28.281368821292777,
+        "pauseRatio": 0.6751765344921239,
+        "speechRate": 4.444658982889734,
+        "duration": 21.373968253968254
+      },
+      "selfReport": {
+        "stress": 8,
+        "fatigue": 9
+      }
+    },
+    {
+      "id": "2vgrf9",
+      "timestamp": "2026-01-17T16:26:43.458Z",
+      "features": {
+        "rms": 0.021769579860190017,
+        "zcr": 24.817494600431967,
+        "pauseRatio": 0.642548596112311,
+        "speechRate": 3.674131850701944,
+        "duration": 21.501678004535147
+      },
+      "selfReport": {
+        "stress": 7,
+        "fatigue": 9
+      }
     }
   ],
   "baseline": {
-    "avgEnergy": 0.014803403885906036,
-    "avgStress": 5,
-    "windowSize": 7
+    "avgEnergy": 0.017700456908385235,
+    "avgStress": 6.285714285714286,
+    "windowSize": 14
   }
 }
