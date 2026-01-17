@@ -47,18 +47,44 @@ export default function Dashboard({ latestCheckIn, history }: { latestCheckIn?: 
                     Weekly Insights
                 </h3>
 
-                {/* Mock Insight */}
-                <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-lg p-4 flex items-start space-x-3 mb-4">
-                    <AlertTriangle className="w-5 h-5 text-yellow-500 mt-1 shrink-0" />
-                    <div>
-                        <h4 className="font-semibold text-yellow-500">Drift Detected</h4>
-                        <p className="text-sm text-yellow-200/80 mt-1">
-                            Your <strong>Energy Limit</strong> has been trending down for 3 consecutive days, coinciding with rose reported stress.
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            Values drifted 1.5σ from your 14-day baseline.
-                        </p>
-                    </div>
+                {/* AI Assessment Section */}
+                <div className="bg-card border border-border rounded-xl p-6 mb-6">
+                    <h3 className="text-lg font-bold mb-4 flex items-center">
+                        <Activity className="w-5 h-5 mr-2 text-primary" />
+                        AI Assessment
+                    </h3>
+
+                    {!latestCheckIn || !latestCheckIn.flags || latestCheckIn.flags.length === 0 ? (
+                        <div className="text-muted-foreground text-sm">
+                            No significant anomalies detected. You are within your personal baseline.
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {latestCheckIn.flags.map((flag: any, i: number) => (
+                                <div key={i} className="bg-muted/30 rounded-lg p-3 border border-muted">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h4 className="font-semibold text-sm flex items-center">
+                                            <AlertTriangle className="w-4 h-4 mr-2 text-yellow-500" />
+                                            {flag.type.replace(/_/g, " ")}
+                                        </h4>
+                                        <span className="text-xs font-mono bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded">
+                                            {flag.score}% CONFIDENCE
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mb-2">
+                                        {flag.msg}
+                                    </p>
+                                    {/* Score Bar */}
+                                    <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-yellow-500 transition-all duration-500"
+                                            style={{ width: `${flag.score}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

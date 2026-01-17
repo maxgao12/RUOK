@@ -27,10 +27,10 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
     const [fatigue, setFatigue] = useState(5);
 
     const PROMPTS = [
-        "When the sunlight strikes raindrops in the air, they act like a prism and form a rainbow.",
-        "The quick brown fox jumps over the lazy dog.",
-        "I am happy to join with you today in what will go down in history as the greatest demonstration for freedom in the history of our nation.",
-        "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune."
+        "When the sunlight strikes raindrops in the air, they act like a prism and form a rainbow. The rainbow is a division of white light into many beautiful colors. These take the shape of a long round arch, with its path high above, and its two ends apparently beyond the horizon.",
+        "You wish to know all about my grandfather. Well, he is nearly ninety-three years old; he dresses himself in an ancient black frock coat, usually minus several buttons; yet he still thinks as swiftly as ever. A long, flowing beard clings to his chin, giving those who observe him a pronounced feeling of the utmost respect.",
+        "There is a popularity that seeks him, and there is a popularity that he seeks. He is not always popular with others, but he is always popular with himself. He reads books, he listens to music, and he often walks alone in the forest, listening to the wind in the trees and the birds singing their songs.",
+        "The north wind and the sun were disputing which was the stronger, when a traveler came along wrapped in a warm cloak. They agreed that the one who first succeeded in making the traveler take his cloak off should be considered stronger than the other. Then the north wind blew as hard as he could, but the more he blew the more closely the traveler folded his cloak around him."
     ];
     const [promptText, setPromptText] = useState("");
 

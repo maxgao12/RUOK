@@ -74,11 +74,41 @@
         "stress": 5,
         "fatigue": 5
       }
+    },
+    {
+      "id": "s8noi",
+      "timestamp": "2026-01-17T16:06:15.435Z",
+      "features": {
+        "rms": 0.02064917825542365,
+        "zcr": 22.41923284710967,
+        "pauseRatio": 0.6418152350081038,
+        "speechRate": 4.048381786871961,
+        "duration": 21.490068027210885
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
+    },
+    {
+      "id": "1qjjsn",
+      "timestamp": "2026-01-17T16:06:39.633Z",
+      "features": {
+        "rms": 0.019215585023060783,
+        "zcr": 24.742857142857144,
+        "pauseRatio": 0.7588571428571429,
+        "speechRate": 3.54375,
+        "duration": 10.158730158730158
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 5
+      }
     }
   ],
   "baseline": {
-    "avgEnergy": 0.012751812784571565,
+    "avgEnergy": 0.014803403885906036,
     "avgStress": 5,
-    "windowSize": 5
+    "windowSize": 7
   }
 }
