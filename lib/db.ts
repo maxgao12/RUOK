@@ -71,5 +71,22 @@ export const db = {
 
         writeDb(database);
     },
-    getBaseline: () => readDb().baseline
+    getBaseline: () => readDb().baseline,
+    resetBaseline: (features: CheckInRecord['features'], selfReport: CheckInRecord['selfReport']) => {
+        const database = readDb();
+
+        // Hard reset baseline to this sample
+        database.baseline = {
+            avgEnergy: features.rms,
+            avgStress: selfReport.stress,
+            windowSize: 1 // Starts fresh
+        };
+
+        // Clear previous check-ins to avoid polluting the new baseline? 
+        // Or just keep them? Let's just reset the baseline stats for now.
+        // Actually for a true "Reset", maybe we SHOULD clear loose history if it's junk?
+        // For safety, let's just update the baseline reference.
+
+        writeDb(database);
+    }
 };

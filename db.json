@@ -209,11 +209,86 @@
         "stress": 7,
         "fatigue": 9
       }
+    },
+    {
+      "id": "suet6u",
+      "timestamp": "2026-01-17T16:42:05.435Z",
+      "features": {
+        "rms": 0.003292926120157845,
+        "zcr": 19.553488372093025,
+        "pauseRatio": 1,
+        "speechRate": 0,
+        "duration": 2.4961451247165534
+      },
+      "selfReport": {
+        "stress": 5,
+        "fatigue": 10
+      }
+    },
+    {
+      "id": "03nee4j",
+      "timestamp": "2026-01-17T16:42:42.399Z",
+      "features": {
+        "rms": 0.0195111184113241,
+        "zcr": 24.268309377138944,
+        "pauseRatio": 0.6570841889117043,
+        "speechRate": 4.59846637577002,
+        "duration": 16.9621768707483
+      },
+      "selfReport": {
+        "stress": 8,
+        "fatigue": 9
+      }
+    },
+    {
+      "id": "8p0c27",
+      "timestamp": "2026-01-17T16:43:03.873Z",
+      "features": {
+        "rms": 0.021310637526664636,
+        "zcr": 28.771066368381806,
+        "pauseRatio": 0.639821029082774,
+        "speechRate": 5.2026531040268456,
+        "duration": 15.568979591836735
+      },
+      "selfReport": {
+        "stress": 10,
+        "fatigue": 9
+      }
+    },
+    {
+      "id": "vrfbie",
+      "timestamp": "2026-01-17T16:45:47.929Z",
+      "features": {
+        "rms": 0.024510035756224773,
+        "zcr": 25.704935622317596,
+        "pauseRatio": 0.6137339055793991,
+        "speechRate": 4.574650449302575,
+        "duration": 21.640997732426303
+      },
+      "selfReport": {
+        "stress": 10,
+        "fatigue": 0
+      }
+    },
+    {
+      "id": "dh0dcf",
+      "timestamp": "2026-01-17T16:46:18.157Z",
+      "features": {
+        "rms": 0.031293957880651785,
+        "zcr": 21.257977285018928,
+        "pauseRatio": 0.7025419145484045,
+        "speechRate": 3.2608420091941586,
+        "duration": 21.46684807256236
+      },
+      "selfReport": {
+        "stress": 10,
+        "fatigue": 0
+      }
     }
   ],
   "baseline": {
-    "avgEnergy": 0.017700456908385235,
-    "avgStress": 6.285714285714286,
-    "windowSize": 14
+    "avgEnergy": 0.024867084289089358,
+    "avgStress": 10,
+    "windowSize": 19
   }
 }

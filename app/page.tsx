@@ -27,12 +27,23 @@ export default function Home() {
     fetchHistory();
   }, []);
 
+  const [isCalibration, setIsCalibration] = useState(false);
+
+  // Initial check: If no history, assume we need calibration
+  useEffect(() => {
+    if (history.length === 0) {
+      setIsCalibration(true);
+    } else {
+      setIsCalibration(false);
+    }
+  }, [history]);
+
   const handleCheckInComplete = async (data: any) => {
     try {
       await fetch("/api/checkin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ ...data, isCalibration })
       });
     } catch (e) {
       console.error("Failed to save check-in", e);
@@ -43,6 +54,10 @@ export default function Home() {
     // Slight delay to show "Saved" state
     setTimeout(async () => {
       await fetchHistory();
+      // If we just calibrated, turn off calibration mode
+      if (isCalibration) {
+        setIsCalibration(false);
+      }
       setView("DASHBOARD");
     }, 1500);
   };
@@ -64,10 +79,24 @@ export default function Home() {
       <main className="w-full flex flex-col items-center">
         {view === "CHECK_IN" && (
           <div className="w-full max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-light mb-2">Hi, Max.</h2>
-              <p className="text-xl text-muted-foreground">Are you okay today?</p>
-            </div>
+
+            {isCalibration ? (
+              <div className="text-center mb-8">
+                <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold tracking-widest uppercase mb-4">
+                  Onboarding
+                </span>
+                <h2 className="text-3xl font-light mb-2">Welcome, Max.</h2>
+                <p className="text-xl text-muted-foreground">
+                  Let's calibrate your voice. Please record a "Neutral" sample where you feel okay.
+                </p>
+              </div>
+            ) : (
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-light mb-2">Hi, Max.</h2>
+                <p className="text-xl text-muted-foreground">Are you okay today?</p>
+              </div>
+            )}
+
             <VoiceRecorder onComplete={handleCheckInComplete} />
 
             <button
@@ -76,6 +105,15 @@ export default function Home() {
             >
               Skip to Dashboard
             </button>
+
+            {!isCalibration && (
+              <button
+                onClick={() => setIsCalibration(true)}
+                className="mt-4 text-xs text-muted-foreground/50 hover:text-muted-foreground block mx-auto"
+              >
+                Recalibrate Baseline
+              </button>
+            )}
           </div>
         )}
 

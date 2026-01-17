@@ -8,7 +8,7 @@ const genId = () => Math.random().toString(36).substring(7);
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { features, selfReport } = body;
+        const { features, selfReport, isCalibration } = body;
 
         const record = {
             id: genId(),
@@ -16,6 +16,22 @@ export async function POST(request: Request) {
             features,
             selfReport
         };
+
+        if (isCalibration) {
+            // This is a "Baseline/Neutral" sample.
+            // We set the baseline to this exact sample.
+            db.resetBaseline(features, selfReport);
+
+            // Still save the record so it appears in history
+            db.addCheckIn(record);
+
+            return NextResponse.json({
+                success: true,
+                msg: "Calibration complete. Baseline set.",
+                processed: record,
+                flags: [] // No flags for calibration
+            });
+        }
 
         db.addCheckIn(record);
 

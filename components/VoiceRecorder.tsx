@@ -73,33 +73,45 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
         }
     };
 
-    // AI Inference Logic for Client-Side "Instant Feedback"
-    const inferMetrics = (feat: AudioFeatures) => {
-        let calcStress = 5;
-        let calcFatigue = 5;
+    // Continuous, baseline-relative stress/fatigue estimation
+    const inferMetrics = (feat: AudioFeatures, baseline?: {
+        speechRateMean: number, speechRateStd: number,
+        rmsMean: number, rmsStd: number,
+        zcrMean: number, zcrStd: number,
+        pauseMean: number, pauseStd: number
+    }) => {
 
-        // 1. Infer Stress (Fast speech, high pitch/zcr, high energy)
-        if (feat.speechRate > 4.8) calcStress += 3;
-        else if (feat.speechRate > 4.2) calcStress += 1;
-
-        if (feat.rms > 0.25) calcStress += 2;
-        if (feat.zcr > 0.15) calcStress += 2;
-
-        // Lower stress if calm
-        if (feat.speechRate < 3.5 && feat.rms < 0.1) calcStress -= 2;
-
-        // 2. Infer Fatigue (Slow speech, low energy, pauses)
-        if (feat.speechRate < 3.0) calcFatigue += 3;
-        if (feat.rms < 0.05) calcFatigue += 2;
-        if (feat.pauseRatio > 0.3) calcFatigue += 2;
-
-        // Lower fatigue if energetic
-        if (feat.speechRate > 4.0 && feat.rms > 0.15) calcFatigue -= 3;
-
-        return {
-            stress: Math.max(1, Math.min(10, calcStress)),
-            fatigue: Math.max(1, Math.min(10, calcFatigue))
+        // Fallback to hard-coded baseline if none provided
+        const b = baseline || {
+            speechRateMean: 4.0, speechRateStd: 0.5,
+            rmsMean: 0.2, rmsStd: 0.05,
+            zcrMean: 0.1, zcrStd: 0.05,
+            pauseMean: 0.2, pauseStd: 0.05
         };
+
+        // 1. Compute z-scores for all features
+        const z_speechRate = (feat.speechRate - b.speechRateMean) / b.speechRateStd;
+        const z_rms = (feat.rms - b.rmsMean) / b.rmsStd;
+        const z_zcr = (feat.zcr - b.zcrMean) / b.zcrStd;
+        const z_pause = (feat.pauseRatio - b.pauseMean) / b.pauseStd;
+
+        // 2. Continuous weighted sums for stress/fatigue
+        // Stress increases with faster speech, louder volume, higher ZCR, lower pauses
+        const stress_raw = 0.4 * z_speechRate + 0.3 * z_rms + 0.2 * z_zcr - 0.1 * z_pause;
+
+        // Fatigue increases with slower speech, lower volume, lower ZCR, higher pauses
+        const fatigue_raw = -0.4 * z_speechRate - 0.3 * z_rms - 0.2 * z_zcr + 0.1 * z_pause;
+
+        // 3. Normalize to 0–10 scale
+        const normalize = (value: number, min = -3, max = 3) => {
+            const clipped = Math.max(min, Math.min(max, value));
+            return Math.round(((clipped - min) / (max - min)) * 10);
+        };
+
+        const stress = normalize(stress_raw);
+        const fatigue = normalize(fatigue_raw);
+
+        return { stress, fatigue };
     };
 
     const stopRecording = async () => {
@@ -109,13 +121,13 @@ export default function VoiceRecorder({ onComplete }: VoiceRecorderProps) {
             setFeatures(result);
 
             // Auto-analyze and submit
-            setStep("REPORT"); // Briefly show "Analyzing"
+            setStep("REPORT"); // show analyzing
 
+            // Infer metrics using continuous model
             const inferred = inferMetrics(result);
             setStress(inferred.stress);
             setFatigue(inferred.fatigue);
 
-            // Simulate "Thinking" delay then submit
             setTimeout(() => {
                 onComplete({
                     features: result,
